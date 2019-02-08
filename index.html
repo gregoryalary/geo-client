@@ -5,6 +5,8 @@
   <title>Géo client</title>
   <link rel="icon" href="https://api.gouv.fr/img/favicon.ico">
   <!-- Styles -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
   <link rel="stylesheet" href="./style.css">
@@ -37,7 +39,7 @@
             <h1 class="title is-2">Région</h1>
             <div class="field">
               <div class="control has-text-centered">
-                <div class="select is-primary">
+                <div class="select is-primary is-rounded" :class="{'is-loading' : (regions.length == 0)}">
                   <select @input="selectRegion">
                     <option disabled selected value>Select a région</option>
                     <option v-for="region in regions" :value="region.code">{{ region.nom }}</option>
@@ -50,7 +52,7 @@
             <h1 class="title is-2" :class="{'has-text-grey-light' : selectedRegion === null}">Département</h1>
             <div class="field">
               <div class="control has-text-centered">
-                <div class="select is-primary" v-if="selectedRegion != null">
+                <div class="select is-primary is-rounded" v-if="selectedRegion != null" :class="{'is-loading' : (departements.length == 0)}">
                   <select @change="selectDepartement">
                     <option disabled selected value>Select a département</option>
                     <option v-for="departement in departements" :value="departement.code">{{ departement.nom }}</option>
@@ -63,7 +65,7 @@
             <h1 class="title is-2" :class="{'has-text-grey-light' : selectedDepartement === null}">Commune</h1>
             <div class="field">
               <div class="control has-text-centered">
-                <div class="select is-primary" v-if="selectedDepartement != null">
+                <div class="select is-primary is-rounded" v-if="selectedDepartement != null" :class="{'is-loading' : (communes.length == 0)}">
                   <select @input="selectCommune">
                     <option disabled selected value>Select a commune</option>
                     <option v-for="commune in communes" :value="commune.code">{{ commune.nom }}</option>
