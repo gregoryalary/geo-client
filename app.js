@@ -1,13 +1,7 @@
 'use strict';
 
 // Intialize the map and focus the France
-var map = L.map('map', {
-  center: [47.82, 2.61],
-  zoom: 5
-});
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
+var map;
 
 new Vue({
   el: '#app',
@@ -70,7 +64,7 @@ new Vue({
     },
     selectedCommune: function () {
       if (this.selectedCommune != null) { // guard in case the watch has been trigerred because of a reset
-        this.$http.get('https://geo.api.gouv.fr/communes/' + this.selectedCommune.code + '?fields=nom,codesPostaux,centre,surface,contour,population&format=json&geometry=centre').then(response => {
+        this.$http.get('https://geo.api.gouv.fr/communes/' + this.selectedCommune.code + '?fields=nom,code,codesPostaux,centre,surface,contour,codeDepartement,departement,codeRegion,region,population&format=json&geometry=centre').then(response => {
           this.currentInformations = response.body;
           if (this.polyline != null) { // Remove the polyline if a previous line exist
             map.removeLayer(this.polyline);
@@ -92,6 +86,15 @@ new Vue({
         });
       }
     }
+  },
+  mounted() {
+    map = L.map('map', {
+      center: [47.82, 2.61],
+      zoom: 5
+    });
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
   },
   beforeMount() {
     // load regions

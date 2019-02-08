@@ -33,7 +33,7 @@
   </section>
   <div class="container">
     <div id="app">
-      <section class="section">
+      <section class="section select-section">
         <div class="columns is-desktop">
           <div class="column has-text-centered">
             <h1 class="title is-2">Région</h1>
@@ -52,7 +52,8 @@
             <h1 class="title is-2" :class="{'has-text-grey-light' : selectedRegion === null}">Département</h1>
             <div class="field">
               <div class="control has-text-centered">
-                <div class="select is-primary is-rounded" v-if="selectedRegion != null" :class="{'is-loading' : (departements.length == 0)}">
+                <div class="select is-primary is-rounded" v-if="selectedRegion != null"
+                  :class="{'is-loading' : (departements.length == 0)}">
                   <select @change="selectDepartement">
                     <option disabled selected value>Select a département</option>
                     <option v-for="departement in departements" :value="departement.code">{{ departement.nom }}</option>
@@ -65,7 +66,8 @@
             <h1 class="title is-2" :class="{'has-text-grey-light' : selectedDepartement === null}">Commune</h1>
             <div class="field">
               <div class="control has-text-centered">
-                <div class="select is-primary is-rounded" v-if="selectedDepartement != null" :class="{'is-loading' : (communes.length == 0)}">
+                <div class="select is-primary is-rounded" v-if="selectedDepartement != null"
+                  :class="{'is-loading' : (communes.length == 0)}">
                   <select @input="selectCommune">
                     <option disabled selected value>Select a commune</option>
                     <option v-for="commune in communes" :value="commune.code">{{ commune.nom }}</option>
@@ -76,10 +78,49 @@
           </div>
         </div>
       </section>
+      <hr>
+      <section class="section map-section">
+        <div class="columns">
+          <div class="column has-text-centered is-one-quarter">
+            <div v-if="selectedCommune != null">
+              <h1 class="title is-2 has-text-primary">{{ selectedCommune.nom }}</h1>
+              <table class="table is-striped is-fullwidth is-hoverable" v-if="currentInformations != null">
+                <tbody>
+                  <tr>
+                    <td class="has-text-centered">Population</td>
+                    <td class="has-text-centered">{{ currentInformations.population }} habitants</td>
+                  </tr>
+                  <tr>
+                    <td class="has-text-centered">Surface</td>
+                    <td class="has-text-centered">{{ currentInformations.surface }} km2</td>
+                  </tr>
+                  <tr>
+                    <td class="has-text-centered">{{ currentInformations.codesPostaux.length > 1 ? 'Codes postaux' : 'Code postal' }}</td>
+                    <td class="has-text-centered">{{ currentInformations.codesPostaux.join(', ') }}</td>
+                  </tr>
+                  <tr>
+                    <td class="has-text-centered">Code INSEE</td>
+                    <td class="has-text-centered">{{ currentInformations.code }}</td>
+                  </tr>
+                  <tr>
+                    <td class="has-text-centered">Departement</td>
+                    <td class="has-text-centered">{{ currentInformations.departement.nom }}</td>
+                  </tr>
+                  <tr>
+                    <td class="has-text-centered">Region</td>
+                    <td class="has-text-centered">{{ currentInformations.region.nom }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="column is-three-quarters">
+            <div id="map"></div>
+          </div>
+        </div>
+      </section>
     </div>
-    <div class="section map-section">
-      <div id="map"></div>
-    </div>
+  </div>
   </div>
   <footer class="footer">
     <div class="content has-text-centered">

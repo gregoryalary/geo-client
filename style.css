@@ -2,8 +2,13 @@
     height: 400px;
 }
 
+.select-section {
+    padding-bottom: 15px;
+}
+
 .map-section {
-    padding-top: 0;
+    padding-bottom: 50px;
+    padding-top: 15px;
 }
 
 .footer {
