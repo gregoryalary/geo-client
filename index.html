@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Géo client</title>
+  <link rel="icon" href="https://api.gouv.fr/img/favicon.ico">
+  <!-- Styles -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
+  <link rel="stylesheet" href="./style.css">
+  <!-- Scripts -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.3/vue.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+  <script type="text/javascript" src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/vue2-leaflet@1.0.1/dist/vue2-leaflet.js"></script>
+  <script type="text/javascript" src="./app.js" defer></script>
+</head>
+
+<body>
+  <section class="hero is-primary is-bold">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          Geo client
+        </h1>
+        <h2 class="subtitle">
+          A simple client for the governemental géo api.
+        </h2>
+      </div>
+    </div>
+  </section>
+  <div class="container">
+    <div id="app">
+      <section class="section">
+        <div class="columns is-desktop">
+          <div class="column has-text-centered">
+            <h1 class="title is-2">Région</h1>
+            <div class="field">
+              <div class="control has-text-centered">
+                <div class="select is-primary">
+                  <select @input="selectRegion">
+                    <option disabled selected value>Select a région</option>
+                    <option v-for="region in regions" :value="region.code">{{ region.nom }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column has-text-centered">
+            <h1 class="title is-2" :class="{'has-text-grey-light' : selectedRegion === null}">Département</h1>
+            <div class="field">
+              <div class="control has-text-centered">
+                <div class="select is-primary" v-if="selectedRegion != null">
+                  <select @change="selectDepartement">
+                    <option disabled selected value>Select a département</option>
+                    <option v-for="departement in departements" :value="departement.code">{{ departement.nom }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column has-text-centered">
+            <h1 class="title is-2" :class="{'has-text-grey-light' : selectedDepartement === null}">Commune</h1>
+            <div class="field">
+              <div class="control has-text-centered">
+                <div class="select is-primary" v-if="selectedDepartement != null">
+                  <select @input="selectCommune">
+                    <option disabled selected value>Select a commune</option>
+                    <option v-for="commune in communes" :value="commune.code">{{ commune.nom }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="section map-section">
+      <div id="map"></div>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+        <strong>Géo client</strong> by <a href="https://github.com/gregoryalary">Grégory Alary</a>.<br>
+      </p>
+      <p>
+        Made in 2018 in Toulouse.
+      </p>
+    </div>
+  </footer>
+</body>
+
+</html>
