@@ -92,11 +92,18 @@ new Vue({
   mounted() {
     map = L.map('map', {
       center: [47.82, 2.61],
-      zoom: 5
+      zoom: 5,
+      zoomControl: false
     });
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+    map.touchZoom.disable();
+    map.doubleClickZoom.disable();
+    map.scrollWheelZoom.disable();
+    map.boxZoom.disable();
+    map.keyboard.disable();
+    map.dragging.disable();
   },
   beforeMount() {
     // load regions
