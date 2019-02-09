@@ -50,6 +50,7 @@ new Vue({
       // Get regions
       this.$http.get('https://geo.api.gouv.fr/regions/' + this.selectedRegion.code + '/departements?fields=nom,code').then(response => {
         this.departements = response.body;
+        document.getElementById('select-departement').selectedIndex = 0;
       });
       // Reset the commune list because the department has been reseted too
       this.communes = [];
@@ -59,6 +60,7 @@ new Vue({
       if (this.selectedDepartement != null) { // guard in case the watch has been trigerred because of a reset
         this.$http.get('https://geo.api.gouv.fr/departements/' + this.selectedDepartement.code + '/communes?fields=nom,code').then(response => {
           this.communes = response.body;
+          document.getElementById('select-commune').selectedIndex = 0;
         });
       }
     },

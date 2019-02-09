@@ -41,7 +41,7 @@
               <div class="control has-text-centered">
                 <div class="select is-primary is-rounded" :class="{'is-loading' : (regions.length == 0)}">
                   <select @input="selectRegion">
-                    <option disabled selected value>Select a région</option>
+                    <option disabled selected value="-1">Select a région</option>
                     <option v-for="region in regions" :value="region.code">{{ region.nom }}</option>
                   </select>
                 </div>
@@ -54,8 +54,8 @@
               <div class="control has-text-centered">
                 <div class="select is-primary is-rounded" v-if="selectedRegion != null"
                   :class="{'is-loading' : (departements.length == 0)}">
-                  <select @change="selectDepartement">
-                    <option disabled selected value>Select a département</option>
+                  <select @input="selectDepartement" id="select-departement">
+                    <option disabled selected value="-1">Select a département</option>
                     <option v-for="departement in departements" :value="departement.code">{{ departement.nom }}</option>
                   </select>
                 </div>
@@ -68,8 +68,8 @@
               <div class="control has-text-centered">
                 <div class="select is-primary is-rounded" v-if="selectedDepartement != null"
                   :class="{'is-loading' : (communes.length == 0)}">
-                  <select @input="selectCommune">
-                    <option disabled selected value>Select a commune</option>
+                  <select @input="selectCommune" id="select-commune">
+                    <option disabled selected value="-1">Select a commune</option>
                     <option v-for="commune in communes" :value="commune.code">{{ commune.nom }}</option>
                   </select>
                 </div>
@@ -82,33 +82,45 @@
       <section class="section map-section">
         <div class="columns is-vcentered">
           <div class="column has-text-centered is-one-quarter">
-            <div v-if="selectedCommune != null">
-              <h1 class="title is-2 has-text-primary">{{ selectedCommune.nom }}</h1>
-              <table class="table is-striped is-fullwidth is-hoverable" v-if="currentInformations != null">
+            <div>
+              <h1 class="title is-2 has-text-primary">{{ selectedCommune ? selectedCommune.nom : 'Informations' }}</h1>
+              <table class="table is-striped is-fullwidth is-hoverable">
                 <tbody>
                   <tr>
                     <td class="has-text-centered">Population</td>
-                    <td class="has-text-centered">{{ currentInformations.population }} habitants</td>
+                    <td class="has-text-centered">
+                      {{ currentInformations ? currentInformations.population + ' habitants' : '' }}</td>
                   </tr>
                   <tr>
                     <td class="has-text-centered">Surface</td>
-                    <td class="has-text-centered">{{ currentInformations.surface }} km2</td>
+                    <td class="has-text-centered">{{ currentInformations ? currentInformations.surface + ' km2' : '' }}
+                    </td>
                   </tr>
                   <tr>
-                    <td class="has-text-centered">{{ currentInformations.codesPostaux.length > 1 ? 'Codes postaux' : 'Code postal' }}</td>
-                    <td class="has-text-centered">{{ currentInformations.codesPostaux.join(', ') }}</td>
+                    <td class="has-text-centered">
+                      {{ currentInformations ? (currentInformations.codesPostaux.length > 1 ? 'Codes postaux' : 'Code postal') : 'Code postal' }}
+                    </td>
+                    <td class="has-text-centered">
+                      {{ currentInformations ? currentInformations.codesPostaux.join(', ') : '' }}</td>
                   </tr>
                   <tr>
                     <td class="has-text-centered">Code INSEE</td>
-                    <td class="has-text-centered">{{ currentInformations.code }}</td>
+                    <td class="has-text-centered">{{ currentInformations ? currentInformations.code : '' }}</td>
                   </tr>
                   <tr>
-                    <td class="has-text-centered">Departement</td>
-                    <td class="has-text-centered">{{ currentInformations.departement.nom }}</td>
+                    <td class="has-text-centered">Département</td>
+                    <td class="has-text-centered">{{ currentInformations ? currentInformations.departement.nom : '' }}
+                    </td>
                   </tr>
                   <tr>
-                    <td class="has-text-centered">Region</td>
-                    <td class="has-text-centered">{{ currentInformations.region.nom }}</td>
+                    <td class="has-text-centered">Région</td>
+                    <td class="has-text-centered">{{ currentInformations ? currentInformations.region.nom : '' }}</td>
+                  </tr>
+                  <tr>
+                    <td class="has-text-centered">Densité de population</td>
+                    <td class="has-text-centered">
+                      {{ currentInformations ? (currentInformations.population / currentInformations.surface).toFixed(2) + ' h/km2' : '' }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
